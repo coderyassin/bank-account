@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: bank-account
+oauth:
+  base-url: http://localhost:6689
