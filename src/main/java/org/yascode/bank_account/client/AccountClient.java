@@ -14,4 +14,7 @@ import org.yascode.bank_account.config.CustomBeanDecoder;
 public interface AccountClient {
     @GetMapping("/{accountId}")
     AccountResponse getAccount(@PathVariable Long accountId, @RequestHeader("Authorization") String customHeader);
+
+    @GetMapping("/{accountId}")
+    AccountResponse getAccount(@PathVariable Long accountId);
 }

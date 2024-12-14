@@ -14,7 +14,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountResponse getAccount(Long accountId) {
-        return accountClient.getAccount(accountId, "token");
+    public AccountResponse getAccount(Long accountId, String authorisation) {
+        return accountClient.getAccount(accountId, authorisation);
     }
 }
