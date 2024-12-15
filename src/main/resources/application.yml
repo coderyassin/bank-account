@@ -8,3 +8,6 @@ application:
     jwt:
       algorithm: HS256
       secret_key: 586B633834416E396D7436753879382F423F4428482B4C6250655367566B5970
+      expiration: 9000000
+      refresh_token:
+        expiration: 1296000000
