@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.yascode.bank_account.security.model.ErrorResponse;
 
 import java.io.IOException;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
@@ -29,7 +29,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         ErrorResponse body = ErrorResponse.builder()
                 .status(HttpServletResponse.SC_FORBIDDEN)
                 .error("Forbidden")
-                .timestamp(Instant.now())
+                .timestamp(LocalDateTime.now().toString())
                 .message(accessDeniedException.getMessage())
                 .path(request.getServletPath())
                 .build();

@@ -12,6 +12,7 @@ import org.yascode.bank_account.security.model.ErrorResponse;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Component
 public class Http401UnauthorizedEntryPoint implements AuthenticationEntryPoint {
@@ -32,7 +33,7 @@ public class Http401UnauthorizedEntryPoint implements AuthenticationEntryPoint {
         ErrorResponse body = ErrorResponse.builder()
                 .status(HttpServletResponse.SC_UNAUTHORIZED)
                 .error("Unauthorized")
-                .timestamp(Instant.now())
+                .timestamp(LocalDateTime.now().toString())
                 .message(authException.getMessage())
                 .path(request.getServletPath())
                 .build();
