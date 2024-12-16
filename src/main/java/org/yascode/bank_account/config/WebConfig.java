@@ -16,8 +16,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(jwtCookieInterceptor)
+        /*registry.addInterceptor(jwtCookieInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/api/v1/auth/**");
+                .excludePathPatterns("/api/v1/auth/**");*/
     }
 }

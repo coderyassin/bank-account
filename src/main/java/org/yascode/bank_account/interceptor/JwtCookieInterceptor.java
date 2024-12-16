@@ -11,11 +11,11 @@ import org.yascode.bank_account.client.AuthenticationClient;
 import org.yascode.bank_account.client.model.RefreshTokenResponse;
 import org.yascode.bank_account.client.request.RefreshTokenRequest;
 import org.yascode.bank_account.security.JwtHelper;
+import org.yascode.bank_account.util.TokenExtractor;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -32,11 +32,14 @@ public class JwtCookieInterceptor implements HandlerInterceptor {
     private int refreshTokenExpiration;
     private final JwtHelper jwtHelper;
     private final AuthenticationClient authenticationClient;
+    private final TokenExtractor tokenExtractor;
 
     public JwtCookieInterceptor(JwtHelper jwtHelper,
-                                AuthenticationClient authenticationClient) {
+                                AuthenticationClient authenticationClient,
+                                TokenExtractor tokenExtractor) {
         this.jwtHelper = jwtHelper;
         this.authenticationClient = authenticationClient;
+        this.tokenExtractor = tokenExtractor;
     }
 
     /*@Override
@@ -102,8 +105,8 @@ public class JwtCookieInterceptor implements HandlerInterceptor {
                              HttpServletResponse response,
                              Object handler) throws Exception {
         try {
-            Optional<String> tokenOptional = findCookie(request, JWT_COOKIE_NAME);
-            Optional<String> refreshTokenOptional = findCookie(request, REFRESH_TOKEN);
+            Optional<String> tokenOptional = tokenExtractor.findTokenInCookie(request, JWT_COOKIE_NAME);
+            Optional<String> refreshTokenOptional = tokenExtractor.findTokenInCookie(request, REFRESH_TOKEN);
 
             if (tokenOptional.isEmpty()) {
                 if (refreshTokenOptional.isPresent()) {
@@ -188,16 +191,6 @@ public class JwtCookieInterceptor implements HandlerInterceptor {
         jwtCookie.setSecure(true);
         jwtCookie.setMaxAge(maxAge);
         response.addCookie(jwtCookie);
-    }
-
-    private Optional<String> findCookie(HttpServletRequest request, String name) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies == null) return Optional.empty();
-
-        return Arrays.stream(cookies)
-                .filter(cookie -> name.equals(cookie.getName()))
-                .findFirst()
-                .map(Cookie::getValue);
     }
 
     private void redirectToLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
