@@ -1,6 +1,9 @@
 spring:
   application:
     name: bank-account
+  graphql:
+    graphiql:
+      enabled: true
 oauth:
   base-url: http://localhost:6689
 application:

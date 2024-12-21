@@ -1,0 +1,14 @@
+type BankResponse {
+    id: ID!
+    name: String
+    address: String
+}
+
+type Query {
+    banks: [BankResponse]!
+    bankById(id: ID!): BankResponse
+}
+
+type Mutation {
+    addBank(name: String!, address: String!): BankResponse!
+}

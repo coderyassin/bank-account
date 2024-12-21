@@ -33,9 +33,26 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
+                .cors(corsCustomizer -> corsCustomizer.disable())
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(STATELESS))
                 .authorizeHttpRequests(request -> request.requestMatchers("/public/**").permitAll()
+                        .requestMatchers(
+                                "/graphiql/**",
+                                "/graphql/**",
+                                "favicon.ico",
+                                "/vendor/**",
+                                "/assets/**",
+                                "*.js",
+                                "*.css",
+                                "*.html"
+                        ).permitAll()
                         .anyRequest().authenticated())
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.disable())
+                        .contentSecurityPolicy(csp -> csp
+                                .policyDirectives("frame-ancestors 'self'")
+                        )
+                )
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling.authenticationEntryPoint(unauthorizedEntryPoint)
